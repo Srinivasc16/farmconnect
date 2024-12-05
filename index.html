@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmconnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #81C784;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: margin-right 0.3s ease;
+            background-color: #f9f9f9;
+            top: 0;
+            position: relative;
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+            animation: none;
+        }
+
+        .heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        .subheading {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            animation: fadeIn 2s ease;
+        }
+
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            animation: scaleUp 2s ease;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #ffd700;
+        }
+
+        .button.farmer {
+            background-color: #ffd700;
+            color: black;
+        }
+
+        .button.farmer:hover {
+            background-color: #4CAF50;
+        }
+
+        #google_translate_element {
+            position: absolute;
+            top: 160px;
+            right: 300px;
+            z-index: 1000;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styling for the language dropdown */
+        .goog-te-combo {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            background-color: white;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .skiptranslate.goog-te-banner-frame {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="google_translate_element"></div>
+
+    <div class="container">
+        <h1 class="heading">Welcome to Farm<span style="color:#ffd700;">connect!</span></h1>
+        <p class="subheading">Are you a farmer or a user?</p>
+        <div class="buttons">
+            <button class="button farmer" onclick="window.location.href='farmer.html'">I'm a Farmer</button>
+            <button class="button" onclick="window.location.href='user.html'">I'm a User</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                includedLanguages: 'en,hi,mr,gu,ta,te,kn,ml,pa,bn,or,as,ur,sd,ne,ks,sa,my,doi,bho',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+
+</html>

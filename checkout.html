@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        #logo .yellow {
+            color: #FFD700;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #63656b;
+            margin: 0 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            padding: 20px;
+        }
+
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #ffffff;
+            box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 
+                        0px 105px 63px rgba(0, 0, 0, 0.05), 
+                        0px 47px 47px rgba(0, 0, 0, 0.09), 
+                        0px 12px 26px rgba(0, 0, 0, 0.1), 
+                        0px 0px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 9px 9px 19px 19px;
+            padding: 20px;
+            margin-left: 200px;
+            margin-right: 200px;
+        }
+
+        .checkout-left, .checkout-right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .checkout-left {
+            border-right: 1px solid #efeff3;
+            padding-right: 20px;
+        }
+
+        .checkout-right {
+            padding-left: 20px;
+        }
+
+        .checkout h3 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2b2b2f;
+            margin-bottom: 10px;
+        }
+
+        .products {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .products li {
+            font-size: 25px;
+            font-weight: 600;
+            color: #47484b;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: 900;
+            color: #2B2B2F;
+            margin-top: 10px;
+        }
+
+        .price sup {
+            font-size: 13px;
+            font-weight: 600;
+            color: #47484b;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .details label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #63656b;
+        }
+
+        .input_field {
+            width: 80%;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            font-size: 13px;
+            font-weight: 400;
+            color: #47484b;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+            box-shadow: 0px 1px 0px #efefef, 
+                        0px 1px 0.5px rgba(239, 239, 239, 0.5);
+        }
+
+        .input_field:focus {
+            border: 1px solid transparent;
+            box-shadow: 0px 0px 0px 2px #4480FF;
+            background-color: transparent;
+        }
+
+        .checkout-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 85%;
+            height: 36px;
+            background: #FFD700;
+            border: 0;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+        }
+
+        .checkout-btn:hover {
+            background: #33db00;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farm</span><span class="yellow">connect</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">Products</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" id="login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="checkout-section">
+        <h2>Checkout</h2>
+        <div class="checkout-container">
+            <div class="checkout checkout-left">
+                <h3>Order <span style="color: #FFD700;">Summary</span></h3>
+                <ul id="cartItems" class="products">
+                    <li>Apple - $2.00</li>
+                    <li>Banana - $1.50</li>
+                </ul>
+                <p id="cartTotal" class="price">Total: $3.50</p>
+            </div>
+            <div class="checkout checkout-right">
+                <h3>Shipping <span style="color: #FFD700;">information</span></h3>
+                <form id="shippingForm" class="details">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" class="input_field" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" class="input_field">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" class="input_field" required>
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" class="input_field" required>
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" class="input_field" required>
+                    <label for="zip">Zip:</label>
+                    <input type="text" id="zip" name="zip" class="input_field" required>
+                    <button type="submit" class="checkout-btn">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Load cart information from local storage
+function loadCartFromLocalStorage() {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+        cart = JSON.parse(storedCart);
+        updateCartDisplay();
+    }
+}
+// Define shippingInfo variable outside of the event listener block
+let shippingInfo;
+
+// Handle form submission
+const shippingForm = document.getElementById('shippingForm');
+shippingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(shippingForm);
+    shippingInfo = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        address: formData.get('address'),
+        city: formData.get('city'),
+        state: formData.get('state'),
+        zip: formData.get('zip')
+    };
+
+    // Store shipping address in local storage
+    localStorage.setItem('shippingAddress', JSON.stringify(shippingInfo));
+    window.location.href='place.html';
+});
+// Update cart display
+function updateCartDisplay() {
+    const cartItems = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+
+    // Clear previous cart items
+    cartItems.innerHTML = '';
+    cartTotal.textContent = '';
+
+    // Populate cart items
+    Object.values(cart).forEach(item => {
+        const cartItem = document.createElement('li');
+        cartItem.textContent = `${item.name} - ₹${(item.price * item.quantity).toFixed(2)}`;
+        cartItems.appendChild(cartItem);
+    });
+
+    // Calculate total
+    const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    cartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+}
+
+// Call the function to load cart information when the page loads
+document.addEventListener('DOMContentLoaded', loadCartFromLocalStorage);
+// Update cart in Firebase
+function updateCartInFirebase(user, shippingInfo) {
+    if (!user) return; // Handle case where user is not logged in
+
+    const userEmail = user.email;
+    database.ref(`carts/${userEmail}`).set({
+        items: cart, // Your 'cart' object from previous code
+        total: calculateTotal(cart), // Function to calculate the total (see below)
+        shippingInfo: shippingInfo // Add shipping information
+    }).then(() => {
+        console.log('Cart updated in Firebase');
+        updateCartDisplay(); // Update the UI display
+    }).catch((error) => {
+        console.error('Error updating cart in Firebase:', error);
+    });
+}
+
+// Function to calculate the total
+function calculateTotal(cart) {
+    let total = 0;
+    for (const item in cart) {
+        total += cart[item].price * cart[item].quantity;
+    }
+    return total;
+}
+        // Populate cart items
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        Object.values(cart).forEach(item => {
+            const cartItem = document.createElement('li');
+            cartItem.textContent = `${item.name} - $${(item.price * item.quantity).toFixed(2)}`;
+            cartItems.appendChild(cartItem);
+        });
+
+        // Calculate total
+        const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+        shippingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(shippingForm);
+            const shippingInfo = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                address: formData.get('address'),
+                city: formData.get('city'),
+                state: formData.get('state'),
+                zip: formData.get('zip')
+            };
+            // Process order and update cart in Firebase
+            processOrder(shippingInfo);
+        });
+
+        // Process order and update cart in Firebase
+        function processOrder(shippingInfo) {
+            // Update cart in Firebase
+            updateCartInFirebase(firebase.auth().currentUser, shippingInfo);
+            // Clear cart
+            cart = {};
+            updateCartDisplay();
+            // Display order confirmation
+            displayOrderConfirmation();
+        }
+
+        // Display order confirmation
+        function displayOrderConfirmation() {
+            const checkoutSection = document.querySelector('.checkout-section');
+            checkoutSection.innerHTML = `
+                <h2>Order Confirmation</h2>
+                <p>Thank you for your order!</p>
+                <p>Your order will be shipped to:</p>
+                <p>${shippingInfo.name}</p>
+                <p>${shippingInfo.address}</p>
+                <p>${shippingInfo.city}, ${shippingInfo.state} ${shippingInfo.zip}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

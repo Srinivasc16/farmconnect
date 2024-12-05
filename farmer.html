@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers Connect</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: #ffffff;
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            margin-right: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #logo .connect {
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .login-button,
+        .register-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .login-button:hover,
+        .register-button:hover {
+            background-color: #45a049;
+        }
+
+        .login-button:disabled,
+        .register-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        #userMenu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #userDropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        #userMenu:hover #userDropdown {
+            display: block;
+        }
+
+        #userDropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #userDropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+        #userDropdown a:not(:last-child) {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            margin-top: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #farmconnect-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 4px #888888;
+            margin-bottom: 20px;
+        }
+
+        .login-section,
+        .register-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .login-box {
+            background-color: #ffffff;
+            padding: 2rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            width: 320px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 80%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .login-register-btns {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .login-btn,
+        .register-btn {
+            background-color: #ffd700;
+            color: white;
+            border: none;
+            padding: 10px 60px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .login-btn.active,
+        .register-btn.active {
+            background-color: black;
+            color: white;
+        }
+
+        .login-form,
+        .register-form {
+            display: none;
+        }
+
+        .login-form.active,
+        .register-form.active {
+            display: block;
+        }
+
+        .social-login-btns {
+            margin-top: 20px;
+        }
+
+        .google-btn,
+        .facebook-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .google-btn {
+            background-color: #dd4b39;
+        }
+
+        .facebook-btn {
+            background-color: #3b5998;
+        }
+
+        #google_translate_element {
+            position: absolute;
+            top: 110px;
+            right: 300px;
+            z-index: 1000;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styling for the language dropdown */
+        .goog-te-combo {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            background-color: white;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .skiptranslate.goog-te-banner-frame {
+            display: none !important;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+</head>
+
+<body>
+    <div id="google_translate_element"></div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farmers</span><span class="connect yellow">Connect</span></div>
+            <div class="nav-links">
+                <a href="farmer.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <div id="userMenu">
+                    <a href="#" id="userName">User Name <i class="fas fa-caret-down"></i></a>
+                    <div id="userDropdown">
+                        <a href="#">Profile</a>
+                        <a href="#">Helpdesk</a>
+                        <a href="#" id="logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="login-section">
+        <h2 class="section-title">Login/Register</h2>
+        <div class="login-box">
+            <div class="login-register-btns">
+                <button class="login-btn active">Login</button>
+                <button class="register-btn">Register</button>
+            </div>
+            <div class="login-form active">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="login-button" id="login-submit">Login</button>
+                </form>
+            </div>
+            <!-- Add the following HTML to your existing HTML code -->
+            <div class="register-form">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password:</label>
+                        <input type="password" id="confirm-password" required>
+                    </div>
+                    <button type="submit" class="register-button" id="register-submit">Register</button>
+                </form>
+            </div>
+            <p style="text-align: center;">OR</p>
+            <div class="social-login-btns">
+                <button class="google-btn" onclick="loginWithGoogle()">Continue with Google</button>
+                <button class="facebook-btn">Continue with Facebook</button>
+            </div>
+        </div>
+    </section>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                includedLanguages: 'en,hi,mr,gu,ta,te,kn,ml,pa,bn,or,as,ur,sd,ne,ks,sa,my,doi,bho',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        // Initialize Firebase
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8ZzuS1ryH301CQkMrGjbys7fJQeH1Clo",
+            authDomain: "farmbase-91b88.firebaseapp.com",
+            projectId: "farmbase-91b88",
+            storageBucket: "farmbase-91b88.firebasestorage.app",
+            messagingSenderId: "52906743479",
+            appId: "1:52906743479:web:e91fb268cb3484d0a35f32",
+            measurementId: "G-WJD2YK9EVP"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Login functionality
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('User logged in:', user);
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard
+                })
+                .catch((error) => {
+                    console.error('Error logging in:', error);
+                });
+        });
+        const loginBtn = document.querySelector('.login-btn');
+        const registerBtn = document.querySelector('.register-btn');
+        const registerForm = document.querySelector('.register-form');
+        const googleBtn = document.querySelector('.google-btn');
+        const facebookBtn = document.querySelector('.facebook-btn');
+
+        loginBtn.addEventListener('click', () => {
+            loginBtn.classList.add('active');
+            registerBtn.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+            loginForm.style.display = 'block'; // Show the login form again
+        });
+
+        registerBtn.addEventListener('click', () => {
+            registerBtn.classList.add('active');
+            loginBtn.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+            loginForm.style.display = 'none'; // hide the login form
+            // or
+            loginForm.disabled = true; // disable the login form
+        });
+        function loginWithGoogle() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                var user = result.user;
+                console.log("Logged in with Google:", user);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html'; // Redirect to index.html
+                }, 1000); // 1-second delay
+            }).catch(function (error) {
+                console.error("Google login error:", error);
+                alert("Google login failed: " + error.message);
+            });
+        }
+
+        // Login with Facebook
+        function loginWithFacebook() {
+            showLoading(); // Show loading screen
+            var provider = new firebase.auth.FacebookAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                var user = result.user;
+                console.log("Logged in with Facebook:", user);
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redirect to index.html
+                }, 1000); // 1-second delay
+                hideLoading(); // Hide loading screen
+            }).catch(function (error) {
+                console.error("Facebook login error:", error);
+                hideLoading(); // Hide loading screen even on error
+                alert("Facebook login failed: " + error.message);
+            });
+        }
+        // Register functionality
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('User created:', user);
+                    // Add user data to Firebase Realtime Database
+                    firebase.database().ref('users/' + user.uid).set({
+                        name: name,
+                        email: email,
+                        phone: phone
+                    });
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard
+                })
+                .catch((error) => {
+                    console.error('Error creating user:', error);
+                });
+        });
+
+        // Disable login and register buttons when user is already logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('login-button').disabled = true;
+                document.getElementById('register-button').disabled = true;
+            } else {
+                document.getElementById('login-button').disabled = false;
+                document.getElementById('register-button').disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

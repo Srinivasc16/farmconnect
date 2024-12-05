@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        #logo .yellow {
+            color: #FFD700;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #63656b;
+            margin: 0 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            padding: 20px;
+        }
+
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #ffffff;
+            box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.9), 
+                        0px 105px 63px rgba(0, 0, 0, 0.1), 
+                        0px 47px 47px rgba(0, 0, 0, 0.4), 
+                        0px 12px 26px rgba(0, 0, 0, 0.1), 
+                        0px 0px 0px rgba(0, 0, 0, 0.9);
+            border-radius: 9px 9px 19px 19px;
+            padding: 20px;
+            margin-top: 100px;
+            margin-left: 500px;
+            margin-right: 500px;
+        }
+
+        .checkout-left, .checkout-right {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .checkout-left {
+            padding-right: 20px;
+        }
+
+        .checkout-right {
+            padding-left: 20px;
+        }
+
+        .checkout h3 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #2b2b2f;
+            margin-bottom: 10px;
+        }
+
+        .products {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .products li {
+            font-size: 25px;
+            font-weight: 600;
+            color: #47484b;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: 900;
+            color: #2B2B2F;
+            margin-top: 10px;
+        }
+
+        .price sup {
+            font-size: 13px;
+            font-weight: 600;
+            color: #47484b;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .details label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #63656b;
+        }
+
+        .input_field {
+            width: 80%;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            font-size: 13px;
+            font-weight: 400;
+            color: #47484b;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+            box-shadow: 0px 1px 0px #efefef, 
+                        0px 1px 0.5px rgba(239, 239, 239, 0.5);
+        }
+
+        .input_field:focus {
+            border: 1px solid transparent;
+            box-shadow: 0px 0px 0px 2px #4480FF;
+            background-color: transparent;
+        }
+
+        .checkout-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 85%;
+            height: 36px;
+            background: #FFD700;
+            border: 0;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.15, 0.83, 0.66, 1);
+        }
+
+        .checkout-btn:hover {
+            background: #33db00;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farm</span><span class="yellow">connect</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="#">Products</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" id="login">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="checkout-section">
+        <h2>Confirm page</h2>
+        <div class="checkout-container">
+            <div class="checkout checkout-left">
+                <h3>Order <span style="color: #FFD700;">Summary</span></h3>
+                <ul id="cartItems" class="products">
+                    <!-- Cart items will be displayed here -->
+                </ul>
+                <p id="cartTotal" class="price">Total: ₹<span id="total"></span></p>
+                <h3>Shipping <span style="color: #FFD700;">information</span></h3>
+                <p id="shipping-address"></p>
+                <button id="continue-to-payment" class="checkout-btn">Continue to Payment</button>
+            </div> 
+        </div>
+    </section>
+
+    <script>
+        // Load cart information from local storage
+        function loadCartFromLocalStorage() {
+            const storedCart = localStorage.getItem('cart');
+            if (storedCart) {
+                cart = JSON.parse(storedCart);
+                updateCartDisplay();
+            }
+        }
+
+        // Load shipping address from local storage
+        function loadShippingAddressFromLocalStorage() {
+            const storedShippingAddress = localStorage.getItem('shippingAddress');
+            if (storedShippingAddress) {
+                shippingAddress = JSON.parse(storedShippingAddress);
+                updateShippingAddressDisplay();
+            }
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalElement = document.getElementById('total');
+
+            // Clear previous cart items
+            cartItems.innerHTML = '';
+            cartTotal.textContent = '';
+            totalElement.textContent = '';
+
+            // Populate cart items
+            Object.values(cart).forEach(item => {
+                const cartItem = document.createElement('li');
+                cartItem.textContent = `${item.name} - ₹${(item.price * item.quantity).toFixed(2)}`;
+                cartItems.appendChild(cartItem);
+            });
+
+            // Calculate total
+            const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        // Update shipping address display
+        function updateShippingAddressDisplay() {
+            const shippingAddressElement = document.getElementById('shipping-address');
+            shippingAddressElement.textContent = `${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.zip}`;
+        }
+
+        // Call the function to load cart information when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCartFromLocalStorage();
+            loadShippingAddressFromLocalStorage();
+        });
+
+        // Handle continue to payment button click
+        const continueToPaymentButton = document.getElementById('continue-to-payment');
+        continueToPaymentButton.addEventListener('click', () => {
+            // Direct to payment page
+            window.location.href = 'payment.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #81C784;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: margin-right 0.3s ease;
+        }
+
+        /* Clean Navbar */
+        .navbar {
+            background: #ffffff;
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #logo .connect {
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            height: 50vh;
+            margin-top: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #farmconnect-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 4px #888888;
+            margin-bottom: 20px;
+        }
+
+        #farmconnect-text .farm {
+            font-family: 'Brush Script MT', cursive;
+            color: #1a1a1a;
+        }
+
+        #farmconnect-text .connect {
+            font-family: 'Brush Script MT', cursive;
+            color: #ffd700;
+            /* Yellow color for 'connect' */
+        }
+
+        .hero-para {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #farmconnect-text {
+                font-size: 3rem;
+            }
+
+            .hero-para {
+                font-size: 1.2rem;
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #farmconnect-text {
+                font-size: 2.5rem;
+            }
+
+            .hero-para {
+                font-size: 1rem;
+            }
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 4rem 2rem;
+            background: #ffffff;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-card {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .about-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .about-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        #userMenu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #userDropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        #userMenu:hover #userDropdown {
+            display: block;
+        }
+
+        #userDropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #userDropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+        #userDropdown a:not(:last-child) {
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Custom scrollbar styles */
+        .scrollbar {
+            overflow-y: auto;
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 10px;
+            /* Set the scrollbar width */
+            background-color: #f9f9f9;
+            /* Set the scrollbar background color */
+            border-radius: 10px;
+            /* Set the scrollbar border radius */
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background-color: #ffd700;
+            /* Set the scrollbar thumb color to yellow */
+            border-radius: 10px;
+            /* Set the scrollbar thumb border radius */
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #ffd700;
+            /* Set the scrollbar thumb hover color to yellow */
+        }
+
+        .scrollbar::-webkit-scrollbar-corner {
+            background-color: #f9f9f9;
+            /* Set the scrollbar corner background color */
+            border-radius: 10px;
+            /* Set the scrollbar corner border radius */
+        }
+
+        /* Remove default scrollbar styles */
+        .scrollbar::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            display: none;
+        }
+    </style>
+</head>
+<body class="scrollbar">
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farm</span><span class="connect yellow">connect</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html" class="active">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" id="login">Login</a>
+                <div id="userMenu">
+                    <a href="#" id="userName">User Name <i class="fas fa-caret-down"></i></a>
+                    <div id="userDropdown">
+                        <a href="#">Profile</a>
+                        <a href="#">Helpdesk</a>
+                        <a href="#" id="logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <style>
+        /* ... (your existing styles) ... */
+        #userMenu {
+            position: relative;
+            display: inline-block;
+            /* For dropdown positioning */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        #userMenu:hover .dropdown-content {
+            display: block;
+        }
+
+        #userMenu:visible+#login {
+            display: none;
+        }
+
+        .hide-login {
+            display: none;
+        }
+    </style>
+
+    <section class="hero">
+        <h1 id="farmconnect-text">
+            <span class="farm">About </span><span class="connect">Us</span>
+        </h1>
+    </section>
+
+    <section class="about-section">
+        <h2 class="section-title">Our Story</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Our Mission</h3>
+                <p>We aim to provide high-quality, organic vegetables to our customers while promoting sustainable agriculture practices.</p>
+            </div>
+            <div class="about-card">
+                <h3>Our Team</h3>
+                <p>Our team consists of experienced farmers, educators, and developers who are passionate about making a positive impact on the environment and society.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We aim to provide high-quality, organic vegetables to our customers while promoting sustainable agriculture practices..</p>
+                <div class="social-links">
+                    <a href="#">🚚</a>
+                    <a href="#">📦</a>
+                    <a href="#">📧</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html" class="nav-link">Products</a> </li>
+                    <li><a href="about.html">About</a> </li>
+                    <li><a href="contact.html">Contact</a> </li>
+                    <li><a href="login.html" id="login">Login</a>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <ul class="footer-links">
+                    <li>Email: srinivaschundi0@gmail.com</li>
+                    <li>Phone: +91 8096692970</li>
+                    <li>Address: Hyderabad, India</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 ConstitutionQuest. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzIPFomOVY1NomVcxL48EPaaFPCGPVb-s",
+            authDomain: "farmconnect-d2c2a.firebaseapp.com",
+            projectId: "farmconnect-d2c2a",
+            storageBucket: "farmconnect-d2c2a.firebasestorage.app",
+            messagingSenderId: "865900488302",
+            appId: "1:865900488302:web:ef646245df6aa40ea5687f",
+            measurementId: "G-CWBP9WLBNV"
+        };
+        firebase.initializeApp(firebaseConfig);
+        let cart = {};
+        // ... (your existing Firebase initialization and other JavaScript code) ...
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                const userNameElement = document.getElementById('userName');
+                const userMenu = document.getElementById('userMenu');
+                userNameElement.textContent = user.displayName || user.email; // Use display name if available, otherwise email
+                userMenu.style.display = 'block';
+            } else {
+                // User is signed out
+                const userMenu = document.getElementById('userMenu');
+                userMenu.style.display = 'none';
+            }
+        });
+        const userMenu = document.getElementById('userMenu');
+        const userDropdown = document.getElementById('userDropdown');
+
+        userMenu.addEventListener('mouseover', () => {
+            userDropdown.style.display = 'block';
+        });
+
+        userMenu.addEventListener('mouseout', () => {
+            setTimeout(() => {
+                userDropdown.style.display = 'none';
+            }, 3500); // 10 seconds
+        });
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in, show username and hide login button
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('login').classList.add('hide-login');
+            } else {
+                // User is signed out, hide username and show login button
+                document.getElementById('userMenu').style.display = 'none';
+                document.getElementById('login').classList.remove('hide-login');
+            }
+        });
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', () => {
+            firebase.auth().signOut().then(() => {
+                // Sign-out successful.
+                console.log('User signed out');
+                // Redirect to login page (optional)
+                window.location.href = 'login.html'; // Replace with your login page URL
+            }).catch((error) => {
+                // An error happened.
+                console.error('Sign-out error:', error);
+            });
+        });
+
+        // ... (rest of your JavaScript code) ...
+    </script>
+</body>
+</html>

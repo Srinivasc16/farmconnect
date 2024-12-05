@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Connect - Farmer Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #000;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        header nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header nav ul li {
+            margin-right: 20px;
+        }
+
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        header nav a:hover {
+            color: #ffd700;
+        }
+
+        .active {
+            color: #ffd700;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .dashboard {
+            background-color: #fff;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard h1 {
+            color: #000;
+        }
+
+        .dashboard p {
+            color: #666;
+        }
+
+        .add-product-btn,
+        .view-products-btn {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+            /* Added margin for better spacing */
+        }
+
+        .add-product-btn:hover,
+        .view-products-btn:hover {
+            background-color: #000;
+            color: #ffd700;
+        }
+
+        .add-product {
+            display: none;
+            background-color: #fff;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            /* Adjust width as needed */
+            max-width: 600px;
+            /* Set a maximum width */
+        }
+
+        .add-product h2 {
+            color: #000;
+        }
+
+        .add-product label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .add-product input,
+        .add-product textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .add-product button[type="submit"] {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+            /* Added margin for better spacing */
+        }
+
+        .add-product button[type="submit"]:hover {
+            background-color: #000;
+            color: #ffd700;
+        }
+
+        .view-products {
+            display: none;
+            background-color: #fff;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            /* Adjust width as needed */
+            max-width: 600px;
+            /* Set a maximum width */
+            overflow-x: auto;
+            /* Enable horizontal scroll if needed */
+        }
+
+        .view-products h2 {
+            color: #000;
+        }
+
+        .view-products table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .view-products th,
+        .view-products td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .view-products th {
+            background-color: #f0f0f0;
+        }
+
+        .edit-product-btn,
+        .delete-product-btn {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 5px;
+            /* Added margin for better spacing */
+        }
+
+        .edit-product-btn:hover,
+        .delete-product-btn:hover {
+            background-color: #000;
+            color: #ffd700;
+        }
+
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 50%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .popup-content h2 {
+            color: #000;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .popup-content label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .popup-content input,
+        .popup-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 18px;
+        }
+
+        .popup-content button[type="submit"] {
+            background-color: #ffd700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .popup-content button[type="submit"]:hover {
+            background-color: #000;
+            color: #ffd700;
+        }
+
+        .popup-content .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .popup-content .close-popup:hover {
+            color: #ffd700;
+        }
+
+        .popup-content button {
+            margin: 10px;
+        }
+
+        /* Add some spacing between form fields */
+        .popup-content form>*:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        /* Style the welcome popup */
+        #welcome-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #welcome-popup .popup-content {
+            width: 80%;
+            max-width: 400px;
+        }
+
+        /* Style the add/update popup */
+        #add-update-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #add-update-popup .popup-content {
+            width: 80%;
+            max-width: 400px;
+        }
+
+        #add-update-popup {
+            display: none;
+        }
+
+        .popup {
+            display: none;
+        }
+
+        #google_translate_element {
+            position: absolute;
+            top: 100px;
+            right: 300px;
+            z-index: 1000;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styling for the language dropdown */
+        .goog-te-combo {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            background-color: white;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .skiptranslate.goog-te-banner-frame {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="google_translate_element"></div>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Helpdesk</a></li>
+                <li><a href="#">Logout</a></li>
+                <li><a id="add-update-link" href="#">Add/Update</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="dashboard">
+            <h1>Farmer Dashboard</h1>
+            <p>Welcome, [Farmer Name]!</p>
+            <button class="add-product-btn"
+                onclick="document.querySelector('.add-product').style.display = 'block';">Add New Product</button>
+            <button class="view-products-btn"
+                onclick="document.querySelector('.view-products').style.display = 'block';">View My Products</button>
+        </section>
+        <section class="add-product">
+            <h2>Add New Product</h2>
+            <form id="add-product-form">
+                <label for="product-name">Product Name:</label>
+                <input type="text" id="product-name" name="product-name"><br><br>
+                <label for="product-description">Product Description:</label>
+                <textarea id="product-description" name="product-description"></textarea><br><br>
+                <label for="product-price">Product Price:</label>
+                <input type="number" id="product-price" name="product-price"><br><br>
+                <label for="product-quantity">Product Quantity:</label>
+                <input type="number" id="product-quantity" name="product-quantity"><br><br>
+                <button type="submit">Add Product</button>
+            </form>
+        </section>
+        <section class="view-products">
+            <h2>My Products</h2>
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Description</th>
+                        <th>Product Price</th>
+                        <th>Product Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="products-tbody">
+                    <!-- Products will be displayed here -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <div class="popup" id="add-update-popup">
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <h2>Farmer Details</h2>
+            <form id="add-update-form">
+                <label for="farmer-name">Farmer Name:</label>
+                <input type="text" id="farmer-name" name="farmer-name"><br><br>
+                <label for="farmer-email">Farmer Email:</label>
+                <input type="email" id="farmer-email" name="farmer-email"><br><br>
+                <label for="farmer-phone">Farmer Phone:</label>
+                <input type="tel" id="farmer-phone" name="farmer-phone"><br><br>
+                <label for="farmer-password">Farmer Password:</label>
+                <input type="password" id="farmer-password" name="farmer-password"><br><br>
+                <button type="submit">Add/Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                autoDisplay: false,
+                includedLanguages: 'en,hi,mr,gu,ta,te,kn,ml,pa,bn,or,as,ur,sd,ne,ks,sa,my,doi,bho',
+                layout: google.translate.TranslateElement.InlineLayout.DROPDOWN
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        // Your Firebase config (replace with your actual config)
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8ZzuS1ryH301CQkMrGjbys7fJQeH1Clo",
+            authDomain: "farmbase-91b88.firebaseapp.com",
+            databaseURL: "https://farmbase-91b88-default-rtdb.firebaseio.com",
+            projectId: "farmbase-91b88",
+            storageBucket: "farmbase-91b88.firebasestorage.app",
+            messagingSenderId: "52906743479",
+            appId: "1:52906743479:web:e91fb268cb3484d0a35f32",
+            measurementId: "G-WJD2YK9EVP"
+        };
+        <!-- Add the following JavaScript code to your existing JavaScript code -->
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Get elements
+        const addProductForm = document.getElementById('add-product-form');
+        const productsTbody = document.getElementById('products-tbody');
+        const addUpdateForm = document.getElementById('add-update-form');
+        const welcomePopup = document.getElementById('welcome-popup');
+        const addUpdatePopup = document.getElementById('add-update-popup');
+        const registerBtn = document.getElementById('register-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        const closePopupButtons = document.querySelectorAll('.close-popup');
+
+        // Add product functionality
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const productName = document.getElementById('product-name').value;
+            const productDescription = document.getElementById('product-description').value;
+            const productPrice = document.getElementById('product-price').value;
+            const productQuantity = document.getElementById('product-quantity').value;
+            // Add the product to the database
+            db.ref('products').push({
+                name: productName,
+                description: productDescription,
+                price: productPrice,
+                quantity: productQuantity
+            });
+            // Clear the form fields
+            document.getElementById('product-name').value = '';
+            document.getElementById('product-description').value = '';
+            document.getElementById('product-price').value = '';
+            document.getElementById('product-quantity').value = '';
+            // Update the products table
+            db.ref('products').once('value', (snapshot) => {
+                const products = snapshot.val();
+                const productsHtml = [];
+                for (const productId in products) {
+                    const product = products[productId];
+                    const productHtml = `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.description}</td>
+                    <td>${product.price}</td>
+                    <td>${product.quantity}</td>
+                    <td>
+                        <button class="edit-product-btn">Edit</button>
+                        <button class="delete-product-btn">Delete</button>
+                    </td>
+                </tr>
+            `;
+                    productsHtml.push(productHtml);
+                }
+                productsTbody.innerHTML = productsHtml.join('');
+            });
+        });
+
+        // View products functionality
+        const viewProductsBtn = document.querySelector('.view-products-btn');
+
+        viewProductsBtn.addEventListener('click', () => {
+            document.querySelector('.view-products').style.display = 'block';
+            db.ref('products').once('value', (snapshot) => {
+                const products = snapshot.val();
+                const productsHtml = [];
+                for (const productId in products) {
+                    const product = products[productId];
+                    const productHtml = `
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.description}</td>
+                    <td>${product.price}</td>
+                    <td>${product.quantity}</td>
+                    <td>
+                        <button class="edit-product-btn">Edit</button>
+                        <button class="delete-product-btn">Delete</button>
+                    </td>
+                </tr>
+            `;
+                    productsHtml.push(productHtml);
+                }
+                productsTbody.innerHTML = productsHtml.join('');
+            });
+        });
+
+        // Add/Update farmer details
+        addUpdateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const farmerName = document.getElementById('farmer-name').value;
+            const farmerEmail = document.getElementById('farmer-email').value;
+            const farmerPhone = document.getElementById('farmer-phone').value;
+            const farmerPassword = document.getElementById('farmer-password').value;
+
+            db.ref('farmers').orderByChild('email').equalTo(farmerEmail).once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    // User already exists, update their details
+                    const userId = Object.keys(snapshot.val())[0];
+                    db.ref('farmers/' + userId).update({
+                        name: farmerName,
+                        phone: farmerPhone
+                    });
+                    alert("Details Updated!");
+                    addUpdatePopup.style.display = 'none';
+                } else {
+                    // User is new, create a new account
+                    db.ref('farmers').push({
+                        name: farmerName,
+                        email: farmerEmail,
+                        phone: farmerPhone,
+                        password: farmerPassword
+                    });
+                    alert("Registration Successful!");
+                    addUpdatePopup.style.display = 'none';
+                }
+            });
+        });
+
+        // Welcome popup handling
+        registerBtn.addEventListener('click', () => {
+            welcomePopup.style.display = 'none';
+            addUpdatePopup.style.display = 'block';
+        });
+
+        skipBtn.addEventListener('click', () => {
+            welcomePopup.style.display = 'none';
+        });
+
+        // Close popup functionality
+        closePopupButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                welcomePopup.style.display = 'none';
+                addUpdatePopup.style.display = 'none';
+            });
+        });
+
+        // Show welcome popup on load
+        welcomePopup.style.display = 'block';
+
+        // Add product button click
+        document.querySelector('.add-product-btn').addEventListener('click', () => {
+            document.querySelector('.add-product').style.display = 'block';
+        });
+
+        // Add event listener to add/update link
+        document.querySelector('#add-update-link').addEventListener('click', () => {
+            if (addUpdatePopup.style.display === 'block') {
+                addUpdatePopup.style.display = 'none';
+            } else {
+                addUpdatePopup.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #81C784;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: margin-right 0.3s ease;
+        }
+
+        /* Clean Navbar */
+        .navbar {
+            background: #ffffff;
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #logo .connect {
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            height: 100vh;
+            margin-top: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #farmconnect-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 4px #888888;
+            margin-bottom: 20px;
+        }
+
+        #farmconnect-text .farm {
+            font-family: 'Brush Script MT', cursive;
+            color: #1a1a1a;
+        }
+
+        #farmconnect-text .connect {
+            font-family: 'Brush Script MT', cursive;
+            color: #ffd700;
+            /* Yellow color for 'connect' */
+        }
+
+        .hero-para {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #farmconnect-text {
+                font-size: 3rem;
+            }
+
+            .hero-para {
+                font-size: 1.2rem;
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #farmconnect-text {
+                font-size: 2.5rem;
+            }
+
+            .hero-para {
+                font-size: 1rem;
+            }
+        }
+
+        /* Login Section */
+        .login-section {
+            margin-top: 100px;
+            padding: 4rem 2rem;
+            background: #ffffff;
+            margin: 2rem auto;
+            max-width: 800px;
+            border: 2px solid #2563eb;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .login-card {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .login-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .login-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .login-form input {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+        }
+
+        .login-form button[type="submit"] {
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            cursor: pointer;
+        }
+
+        .login-form button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-login button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+
+        .social-login button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farm</span><span class="connect yellow">connect</span></div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" class="active">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="login-section">
+        <h2 class="section-title">Login</h2>
+        <div class="login-grid">
+            <div class="login-card">
+                <h3>Login Form</h3>
+                <p>Enter your email and password to access your account</p>
+                <form class="login-form" id="loginForm">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            <div class="login-card">
+                <h3>Don't have an account?</h3>
+                <p>Create a new account to access our services</p>
+                <button class="social-login" onclick="loginWithGoogle()">Continue with Google</button>
+                <button class="social-login" onclick="loginWithFacebook()">Continue with Facebook</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="loading-screen">
+        <div id="loading-icon"></div>
+    </div>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzIPFomOVY1NomVcxL48EPaaFPCGPVb-s",
+            authDomain: "farmconnect-d2c2a.firebaseapp.com",
+            projectId: "farmconnect-d2c2a",
+            storageBucket: "farmconnect-d2c2a.firebasestorage.app",
+            messagingSenderId: "865900488302",
+            appId: "1:865900488302:web:ef646245df6aa40ea5687f",
+            measurementId: "G-CWBP9WLBNV"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const loadingScreen = document.getElementById('loading-screen');
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showLoading();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in 
+                    const user = userCredential.user;
+                    console.log("Logged in as:", user);
+                    // Redirect to home page after a small delay for visual effect
+                    setTimeout(() => {
+                        window.location.href = 'index.html'; // Replace with your home page URL
+                    }, 1000); // 1-second delay
+                    hideLoading();
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error(errorCode, errorMessage);
+                    hideLoading();
+                    // Display error message to the user
+                    alert("Login failed: " + errorMessage);
+                });
+        });
+
+        function showLoading() {
+            loadingScreen.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            loadingScreen.style.display = 'none';
+        }
+
+        // Login with Google
+        function loginWithGoogle() {
+            showLoading(); // Show loading screen
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                var user = result.user;
+                console.log("Logged in with Google:", user);
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redirect to index.html
+                }, 1000); // 1-second delay
+                hideLoading(); // Hide loading screen
+            }).catch(function (error) {
+                console.error("Google login error:", error);
+                hideLoading(); // Hide loading screen even on error
+                alert("Google login failed: " + error.message);
+            });
+        }
+
+        // Login with Facebook
+        function loginWithFacebook() {
+            showLoading(); // Show loading screen
+            var provider = new firebase.auth.FacebookAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+                var user = result.user;
+                console.log("Logged in with Facebook:", user);
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redirect to index.html
+                }, 1000); // 1-second delay
+                hideLoading(); // Hide loading screen
+            }).catch(function (error) {
+                console.error("Facebook login error:", error);
+                hideLoading(); // Hide loading screen even on error
+                alert("Facebook login failed: " + error.message);
+            });
+        }
+    </script>
+</body>
+
+</html>

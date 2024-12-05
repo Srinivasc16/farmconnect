@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmconnect</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #81C784;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            transition: margin-right 0.3s ease;
+        }
+
+        /* Clean Navbar */
+        .navbar {
+            background: #ffffff;
+            padding: 1.2rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        #logo .connect {
+            color: #ffd700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section Styles */
+        .hero {
+            position: relative;
+            height: 100vh;
+            margin-top: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #farmconnect-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 6rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 2px 2px 4px #888888;
+            margin-bottom: 20px;
+        }
+
+        #farmconnect-text .farm {
+            font-family: 'Brush Script MT', cursive;
+            color: #1a1a1a;
+        }
+
+        #farmconnect-text .connect {
+            font-family: 'Brush Script MT', cursive;
+            color: #ffd700;
+            /* Yellow color for 'connect' */
+        }
+
+        .hero-para {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 4rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            #farmconnect-text {
+                font-size: 3rem;
+            }
+
+            .hero-para {
+                font-size: 1.2rem;
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #farmconnect-text {
+                font-size: 2.5rem;
+            }
+
+            .hero-para {
+                font-size: 1rem;
+            }
+        }
+
+        /* Games Section */
+        .section-title {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .games-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        .game-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .game-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .game-card p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .play-button {
+            background: #ffd700;
+            color: black;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .play-button:hover {
+            color: white;
+            background: #4CAF50;
+        }
+
+        /* News Section */
+        .news-section {
+            background: #ffffff;
+            padding: 3rem 2rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .news-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .news-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .news-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #e5e7eb;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .about-section {
+            padding: 4rem 2rem;
+            background: #ffffff;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-card {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .about-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 3rem 2rem;
+            background: #f8fafc;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 4rem 2rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h4 {
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #a3a3a3;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #ffffff;
+            font-size: 1.5rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #333;
+            color: #a3a3a3;
+            font-size: 0.9rem;
+        }
+
+        /* Call to Action */
+        .cta-section {
+            background: #ffd700;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .cta-button {
+            background: white;
+            color: black;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .vegetable-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .vegetable-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .vegetable-card {
+            position: relative;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .vegetable-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .vegetable-subcategories {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .subcategory {
+            background: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .subcategory:hover {
+            background: #4CAF50;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .vegetable-card:nth-child(odd) {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .vegetable-card:nth-child(even) {
+            animation: float 3s ease-in-out infinite reverse;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 80vh;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 30px;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            color: red;
+            transform: rotate(90deg);
+        }
+
+        .modal-left {
+            flex: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+
+        .modal-right {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-left: 1px solid #e0e0e0;
+        }
+
+        .vegetable-item {
+            width: calc(33.333% - 15px);
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vegetable-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .vegetable-item .veg-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .add-to-cart-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #45a049;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+        }
+
+        .quantity-badge {
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        /* Quantity bump animation */
+        @keyframes quantityBump {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .quantity-bump {
+            animation: quantityBump 0.3s ease;
+        }
+
+        #cartItems {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .side-cart {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .side-cart.open {
+            right: 0;
+        }
+
+        .cart-toggle {
+            position: fixed;
+            top: 5000px;
+            right: 0;
+            background-color: #ffd700;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 0 5px;
+        }
+
+        .cart-total {
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+        }
+
+        .cart-checkout {
+            width: 100%;
+            padding: 10px;
+            background-color: #ffd700;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Explore Section Styles */
+        .explore-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .explore-card {
+            width: 250px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .explore-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .explore-card-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #userMenu {
+            position: relative;
+            display: inline-block;
+        }
+
+        #userDropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        #userMenu:hover #userDropdown {
+            display: block;
+        }
+
+        #userDropdown a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        #userDropdown a:hover {
+            background-color: #f0f0f0;
+        }
+
+        #userDropdown a:not(:last-child) {
+            border-bottom: 1px solid #ccc;
+        }
+
+        /* Custom scrollbar styles */
+        .scrollbar {
+            overflow-y: auto;
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 10px;
+            /* Set the scrollbar width */
+            background-color: #f9f9f9;
+            /* Set the scrollbar background color */
+            border-radius: 10px;
+            /* Set the scrollbar border radius */
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            background-color: #ffd700;
+            /* Set the scrollbar thumb color to yellow */
+            border-radius: 10px;
+            /* Set the scrollbar thumb border radius */
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #ffd700;
+            /* Set the scrollbar thumb hover color to yellow */
+        }
+
+        .scrollbar::-webkit-scrollbar-corner {
+            background-color: #f9f9f9;
+            /* Set the scrollbar corner background color */
+            border-radius: 10px;
+            /* Set the scrollbar corner border radius */
+        }
+
+        /* Remove default scrollbar styles */
+        .scrollbar::-webkit-scrollbar-button {
+            display: none;
+        }
+
+        .scrollbar::-webkit-scrollbar-track {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="scrollbar">
+    <div class="scrollbar" id="style-default">
+        <div class="force-overflow"></div>
+    </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div id="logo"><span class="black">Farm</span><span class="connect yellow">connect</span></div>
+            <div class="nav-links">
+                <a href="user.html">Home</a>
+                <a href="#" class="nav-link">Products</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="login.html" id="login">Login</a>
+                <div id="userMenu">
+                    <a href="#" id="userName">User Name <i class="fas fa-caret-down"></i></a>
+                    <div id="userDropdown">
+                        <a href="#">Profile</a>
+                        <a href="#">Helpdesk</a>
+                        <a href="#" id="logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <style>
+        /* ... (your existing styles) ... */
+        #userMenu {
+            position: relative;
+            display: inline-block;
+            /* For dropdown positioning */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        #userMenu:hover .dropdown-content {
+            display: block;
+        }
+
+        #userMenu:visible+#login {
+            display: none;
+        }
+
+        .hide-login {
+            display: none;
+        }
+
+        .side-cart {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: #fff;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+            transform: translateX(100%);
+        }
+
+        .side-cart.open {
+            transform: translateX(0);
+        }
+
+        .cart-toggle {
+            position: fixed;
+            top: 10%;
+            right: 5%;
+            background-color: #ffd700;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px ;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 0 5px;
+        }
+
+        .cart-total {
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+        }
+
+        .cart-checkout {
+            width: 100%;
+            padding: 10px;
+            background-color: #ffd700;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-item-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 0 5px;
+            width: 24px;
+            /* Added width and height for better circle appearance */
+            height: 24px;
+            border-radius: 50%;
+            /* Makes it a circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #4CAF50;
+            /* Green background */
+            color: white;
+        }
+    </style>
+
+    <section class="hero">
+        <h1 id="farmconnect-text">
+            <span class="farm">Indroducing Farm</span><span class="connect">connect</span>
+        </h1>
+        <p class="hero-para">No middleman between you and farmer</p>
+    </section>
+
+    <section class="vegetable-section">
+        <h2 class="section-title">Vegetable Categories</h2>
+        <div class="vegetable-grid">
+            <div class="vegetable-card">
+                <span class="tag">Fresh</span>
+                <h3>Leafy Greens</h3>
+                <p>Healthy green veggies for daily meals</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Spinach</div>
+                    <div class="subcategory">Kale</div>
+                    <div class="subcategory">Lettuce</div>
+                    <div class="subcategory">Arugula</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+
+            <div class="vegetable-card">
+                <span class="tag">Roots</span>
+                <h3>Root Vegetables</h3>
+                <p>Basic veggies like carrots and potatoes</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Carrots</div>
+                    <div class="subcategory">Beetroot</div>
+                    <div class="subcategory">Potato</div>
+                    <div class="subcategory">Radish</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+
+            <div class="vegetable-card">
+                <span class="tag">Crunchy</span>
+                <h3>Crunchy Vegetables</h3>
+                <p>Veggies like broccoli and cabbage</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Broccoli</div>
+                    <div class="subcategory">Cauliflower</div>
+                    <div class="subcategory">Cabbage</div>
+                    <div class="subcategory">Brussels Sprouts</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+
+            <div class="vegetable-card">
+                <span class="tag">Colorful</span>
+                <h3>Colorful Vegetables</h3>
+                <p>Bright veggies for your plate</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Bell Peppers</div>
+                    <div class="subcategory">Tomatoes</div>
+                    <div class="subcategory">Eggplant</div>
+                    <div class="subcategory">Pumpkin</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+
+            <div class="vegetable-card">
+                <span class="tag">Seasonal</span>
+                <h3>Seasonal Vegetables</h3>
+                <p>Veggies available in the current season</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Zucchini</div>
+                    <div class="subcategory">Asparagus</div>
+                    <div class="subcategory">Corn</div>
+                    <div class="subcategory">Squash</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+
+            <div class="vegetable-card">
+                <span class="tag">Special</span>
+                <h3>Unique Vegetables</h3>
+                <p>Different veggies to try out</p>
+                <div class="vegetable-subcategories">
+                    <div class="subcategory">Artichoke</div>
+                    <div class="subcategory">Kohlrabi</div>
+                    <div class="subcategory">Okra</div>
+                    <div class="subcategory">Fennel</div>
+                </div>
+                <button class="play-button">See More</button>
+            </div>
+        </div>
+    </section>
+    <div id="vegetableModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+
+            <div class="modal-left" id="vegetableList">
+                <!-- Vegetable items will be dynamically added here -->
+            </div>
+
+            <div class="modal-right">
+                <h2 id="categoryTitle">Category Name</h2>
+                <div class="cart-section">
+                    <h3>Cart</h3>
+                    <ul id="cartItems"></ul>
+                    <div id="cartTotal">Total: ₹0.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-toggle" onclick="toggleSideCart()">🛒 Cart</div>
+    <div class="side-cart" id="sideCart">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" onclick="toggleSideCart()">×</button>
+        </div>
+        <div id="cartItemsList"></div>
+        <div id="sidebarCartTotal">Total:₹0.00</div>
+        <button class="cart-checkout" onclick="window.location.href='checkout.html'">Checkout</button>
+    </div>
+    <section class="explore-section" id="exploreSection">
+        <!-- Vegetable explore cards will be dynamically added here -->
+    </section>
+    <section class="news-section">
+        <h2 class="section-title">Latest Farm Updates</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <span class="tag">Latest</span>
+                <h3>Harvest Season Begins</h3>
+                <p>Fresh produce arriving from our partner farms this week!</p>
+            </div>
+            <div class="news-card">
+                <span class="tag">Organic</span>
+                <h3>Sustainable Farming</h3>
+                <p>Our commitment to eco-friendly and sustainable agriculture.</p>
+            </div>
+            <div class="news-card">
+                <span class="tag">Events</span>
+                <h3>Farmers Market Day</h3>
+                <p>Join us for our monthly local farmers market celebration!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <h2 class="section-title">About Our Vegetable Market</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Our Story</h3>
+                <p>Founded by local farmers, we bring fresh, organic vegetables directly from farm to table.</p>
+            </div>
+            <div class="about-card">
+                <h3>Quality Guarantee</h3>
+                <p>Every vegetable is carefully selected, ensuring the highest quality and freshness.</p>
+            </div>
+            <div class="about-card">
+                <h3>Local Support</h3>
+                <p>We support local farmers and sustainable agricultural practices.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose Us?</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🥦</div>
+                    <h3>Fresh Produce</h3>
+                    <p>Farm-fresh vegetables delivered daily</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Fast Delivery</h3>
+                    <p>Free delivery on orders over $30</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Organic Farming</h3>
+                    <p>100% organic and pesticide-free</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to Eat Healthy?</h2>
+        <p>Order fresh vegetables and support local farmers</p>
+        <button class="cta-button">Start Shopping</button>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We aim to provide high-quality, organic vegetables to our customers while promoting sustainable
+                    agriculture practices..</p>
+                <div class="social-links">
+                    <a href="#">🚚</a>
+                    <a href="#">📦</a>
+                    <a href="#">📧</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="user.html">Home</a></li>
+                    <li><a href="#" class="nav-link">Products</a> </li>
+                    <li><a href="about.html">About</a> </li>
+                    <li><a href="contact.html">Contact</a> </li>
+                    <li><a href="login.html" id="login">Login</a>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <ul class="footer-links">
+                    <li>Email: srinivaschundi0@gmail.com</li>
+                    <li>Phone: +91 8096692970</li>
+                    <li>Address: Hyderabad, India</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 ConstitutionQuest. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDzIPFomOVY1NomVcxL48EPaaFPCGPVb-s",
+            authDomain: "farmconnect-d2c2a.firebaseapp.com",
+            projectId: "farmconnect-d2c2a",
+            storageBucket: "farmconnect-d2c2a.firebasestorage.app",
+            messagingSenderId: "865900488302",
+            appId: "1:865900488302:web:ef646245df6aa40ea5687f",
+            measurementId: "G-CWBP9WLBNV"
+        };
+        firebase.initializeApp(firebaseConfig);
+        let cart = {};
+        // ... (your existing Firebase initialization and other JavaScript code) ...
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in, see docs for a list of available properties
+                // https://firebase.google.com/docs/reference/js/firebase.User
+                const userNameElement = document.getElementById('userName');
+                const userMenu = document.getElementById('userMenu');
+                userNameElement.textContent = user.displayName || user.email; // Use display name if available, otherwise email
+                userMenu.style.display = 'block';
+            } else {
+                // User is signed out
+                const userMenu = document.getElementById('userMenu');
+                userMenu.style.display = 'none';
+            }
+        });
+        const userMenu = document.getElementById('userMenu');
+        const userDropdown = document.getElementById('userDropdown');
+
+        userMenu.addEventListener('mouseover', () => {
+            userDropdown.style.display = 'block';
+        });
+
+        userMenu.addEventListener('mouseout', () => {
+            setTimeout(() => {
+                userDropdown.style.display = 'none';
+            }, 3500); // 10 seconds
+        });
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in, show username and hide login button
+                document.getElementById('userMenu').style.display = 'block';
+                document.getElementById('login').classList.add('hide-login');
+            } else {
+                // User is signed out, hide username and show login button
+                document.getElementById('userMenu').style.display = 'none';
+                document.getElementById('login').classList.remove('hide-login');
+            }
+        });
+        // Logout functionality
+        document.getElementById('logout').addEventListener('click', () => {
+            firebase.auth().signOut().then(() => {
+                // Sign-out successful.
+                console.log('User signed out');
+                // Redirect to login page (optional)
+                window.location.href = 'login.html'; // Replace with your login page URL
+            }).catch((error) => {
+                // An error happened.
+                console.error('Sign-out error:', error);
+            });
+        });
+
+        // ... (rest of your JavaScript code) ...
+        function toggleSideCart() {
+            const sideCart = document.getElementById('sideCart');
+            sideCart.classList.toggle('open');
+            const cartToggle = document.querySelector('.cart-toggle');
+            cartToggle.style.display = sideCart.classList.contains('open') ? 'none' : 'block';
+        }
+
+        function removeFromCart(itemName) {
+            if (cart[itemName]) {
+                if (cart[itemName].quantity > 1) {
+                    cart[itemName].quantity -= 1;
+                } else {
+                    delete cart[itemName];
+                }
+                updateCartDisplay();
+                updateCartInFirebase(firebase.auth().currentUser);
+            }
+        }
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                // User is signed in
+                const userEmail = user.email;
+                database.ref(`carts/${userEmail}`).on('value', snapshot => {
+                    const cartData = snapshot.val();
+                    if (cartData) {
+                        cart = cartData.items;
+                        updateCartDisplay();
+                    }
+                });
+            } else {
+                // User is signed out - clear the cart if needed
+                cart = {};
+                updateCartDisplay();
+            }
+        });
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartTotal = document.getElementById('cartTotal');
+            const sidebarCartTotal = document.getElementById('sidebarCartTotal');
+
+            // Clear previous cart items
+            cartItems.innerHTML = '';
+            cartItemsList.innerHTML = '';
+
+            // Populate cart items
+            Object.values(cart).forEach(item => {
+                const cartItem = document.createElement('li');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+            ${item.name} - ₹${(item.price * item.quantity).toFixed(2)}
+            <span class="quantity-badge">${item.quantity}</span>
+        `;
+                cartItems.appendChild(cartItem);
+
+                const cartItemElement = document.createElement('div');
+                cartItemElement.className = 'cart-item';
+                cartItemElement.innerHTML = `
+            <span>${item.name}</span>
+            <div class="cart-item-actions">
+                <button onclick="removeFromCart('${item.name}')">-</button>
+                <span>${item.quantity}</span>
+                <button onclick="addToCart(${JSON.stringify(item)})">+</button>
+                ₹${(item.price * item.quantity).toFixed(2)}
+            </div>
+        `;
+                cartItemsList.appendChild(cartItemElement);
+            });
+
+            // Calculate total
+            const total = Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+            sidebarCartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+
+            // Update local storage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            localStorage.setItem('total', total.toFixed(2));
+        }
+        // Populate Explore Section
+        function populateExploreSection() {
+            const exploreSection = document.getElementById('exploreSection');
+
+            exploreVegetables.forEach(veg => {
+                const exploreCard = document.createElement('div');
+                exploreCard.className = 'explore-card';
+                exploreCard.innerHTML = `
+            <div class="explore-card-icon">${veg.icon}</div>
+            <h3>${veg.name}</h3>
+            <p>${veg.description}</p>
+            <div class="explore-card-actions">
+                <span>$${veg.price.toFixed(2)}</span>
+                <button class="add-to-cart-btn" onclick='addToCart({ name: "${veg.name}", price: ${veg.price}, icon: "${veg.icon}" })'>Add to Cart</button>
+            </div>
+        `;
+                exploreSection.appendChild(exploreCard);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', populateExploreSection);
+        const vegetableCategories = {
+            'Leafy Greens': [
+                { name: 'Spinach', price: 50, icon: '🥬' }, // ₹50 per bunch
+                { name: 'Kale', price: 70, icon: '🥗' },    // ₹70 per bunch
+                { name: 'Lettuce', price: 40, icon: '🥒' }, // ₹40 per head
+                { name: 'Arugula', price: 60, icon: '🥦' }  // ₹60 per bunch
+            ],
+            'Root Vegetables': [
+                { name: 'Carrots', price: 30, icon: '🥕' },  // ₹30 per kg
+                { name: 'Beetroot', price: 40, icon: '🍠' }, // ₹40 per kg
+                { name: 'Potato', price: 25, icon: '🥔' },   // ₹25 per kg
+                { name: 'Radish', price: 35, icon: '🌱' }    // ₹35 per kg
+            ],
+            'Crunchy Vegetables': [
+                { name: 'Broccoli', price: 150, icon: '🥦' },   // ₹150 per kg
+                { name: 'Cauliflower', price: 60, icon: '🥬' }, // ₹60 per head
+                { name: 'Cabbage', price: 40, icon: '🥬' },     // ₹40 per head
+                { name: 'Brussels Sprouts', price: 200, icon: '🌱' } // ₹200 per kg
+            ],
+            'Colorful Vegetables': [
+                { name: 'Bell Peppers', price: 120, icon: '🌶️' }, // ₹120 per kg
+                { name: 'Tomatoes', price: 30, icon: '🍅' },       // ₹30 per kg
+                { name: 'Eggplant', price: 50, icon: '🍆' },       // ₹50 per kg
+                { name: 'Pumpkin', price: 25, icon: '🎃' }         // ₹25 per kg
+            ],
+            'Seasonal Vegetables': [
+                { name: 'Zucchini', price: 100, icon: '🥒' }, // ₹100 per kg
+                { name: 'Asparagus', price: 300, icon: '🌿' }, // ₹300 per kg
+                { name: 'Corn', price: 30, icon: '🌽' },      // ₹30 per cob
+                { name: 'Squash', price: 80, icon: '🎃' }    // ₹80 per kg
+            ],
+            'Unique Vegetables': [
+                { name: 'Artichoke', price: 250, icon: '🌸' },  // ₹250 per piece
+                { name: 'Kohlrabi', price: 100, icon: '🥗' },   // ₹100 per kg
+                { name: 'Okra', price: 40, icon: '🌱' },        // ₹40 per kg
+                { name: 'Fennel', price: 60, icon: '🌾' }       // ₹60 per kg
+            ]
+        };
+
+        function openModal(categoryName) {
+            const modal = document.getElementById('vegetableModal');
+            const vegetableList = document.getElementById('vegetableList');
+            const categoryTitle = document.getElementById('categoryTitle');
+
+            // Clear previous content
+            vegetableList.innerHTML = '';
+            categoryTitle.textContent = categoryName;
+
+            // Add vegetables for the selected category
+            vegetableCategories[categoryName].forEach(veg => {
+                const vegElement = document.createElement('div');
+                vegElement.className = 'vegetable-item';
+                vegElement.innerHTML = `
+                    <div class="veg-icon">${veg.icon}</div>
+                    <h4>${veg.name}</h4>
+                    <p>₹${veg.price.toFixed(2)}</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('${veg.name}', ${veg.price})">Add to Cart</button>
+                `;
+                vegetableList.appendChild(vegElement);
+            });
+
+            modal.style.display = 'block';
+            updateCartDisplay();
+        }
+
+
+        function closeModal() {
+            const modal = document.getElementById('vegetableModal');
+            modal.style.display = 'none';
+        }
+        // Get the products link and the vegetable boxes section
+        const productsLink = document.querySelector('a[href="#"]'); // Assuming the link has no href attribute
+        const vegetableBoxesSection = document.querySelector('.vegetable-section');
+
+        // Add a click event listener to the products link
+        productsLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Smoothly scroll to the vegetable boxes section
+            vegetableBoxesSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+        function addToCart(name, price) {
+            // If item already exists, increase quantity
+            if (cart[name]) {
+                cart[name].quantity += 1;
+                // Add bump animation
+                const cartItemElement = document.querySelector(`.cart-item[data-name="${name}"]`);
+                if (cartItemElement) {
+                    cartItemElement.classList.add('quantity-bump');
+                    setTimeout(() => {
+                        cartItemElement.classList.remove('quantity-bump');
+                    }, 300);
+                }
+            } else {
+                // Add new item to cart
+                cart[name] = { name, price, quantity: 1 };
+            }
+
+            updateCartDisplay(); // Call updateCartDisplay here
+            updateCartInFirebase(firebase.auth().currentUser);
+        }
+
+
+        // Add click event to vegetable cards to open modal
+        document.querySelectorAll('.vegetable-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const categoryName = card.querySelector('h3').textContent;
+                openModal(categoryName);
+            });
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function (event) {
+            const modal = document.getElementById('vegetableModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        function scrollProducts(containerId, direction) {
+            const container = document.getElementById(containerId);
+            const scrollAmount = container.clientWidth;
+            container.scrollBy({
+                top: 0,
+                left: scrollAmount * direction,
+                behavior: 'smooth'
+            });
+        }
+        document.querySelectorAll('.side-product').forEach(product => {
+            product.addEventListener('mouseover', (e) => {
+                e.target.style.transform = 'scale(1.1)';
+            });
+            product.addEventListener('mouseout', (e) => {
+                e.target.style.transform = 'scale(1)';
+            });
+        });
+        function updateCartInFirebase(user) {
+            if (!user) return; // Handle case where user is not logged in
+
+            const userEmail = user.email;
+            database.ref(`carts/${userEmail}`).set({
+                items: cart, // Your 'cart' object from previous code
+                total: calculateTotal(cart) // Function to calculate the total (see below)
+            }).then(() => {
+                console.log('Cart updated in Firebase');
+                updateCartDisplay(); // Update the UI display
+            }).catch((error) => {
+                console.error('Error updating cart in Firebase:', error);
+            });
+        }
+
+        // Function to calculate the total
+        function calculateTotal(cart) {
+            let total = 0;
+            for (const item in cart) {
+                total += cart[item].price * cart[item].quantity;
+            }
+            return total;
+        }
+        const typewriterText = document.getElementById('typewriter-text');
+        const text = typewriterText.textContent;
+        typewriterText.textContent = ''; // Clear initial text
+
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                typewriterText.textContent += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50); // Adjust speed (milliseconds) here
+            }
+        }
+
+        typeWriter();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+</body>
+
+</html>
